@@ -6,6 +6,7 @@
 #include "PeachPlayerController.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/Character.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "BaseCharacter.generated.h"
 
 UCLASS()
@@ -29,6 +30,9 @@ private:
 
 	UPROPERTY(Category=Character,BlueprintReadOnly,meta=(AllowPrivateAccess = "true"));
 	UAnimInstance* ServerBodyAnimBP;
+
+	UPROPERTY(Category=Character,VisibleAnywhere,BlueprintReadWrite,meta=(AllowPrivateAccess = "true"));
+	USpringArmComponent* CameraSpringArm;
 	
 	UPROPERTY(BlueprintReadOnly,meta=(AllowPrivateAccess = "true"))
 	APeachPlayerController* FPSPlayerController;
@@ -42,6 +46,10 @@ private:
 	
 	void JumpAction();
 	void StopJumpAction();
+	void HighSpeedRunAction();
+	void NormalSpeedWalkAction();
+
+
 
 #pragma endregion 
 protected:
@@ -54,5 +62,19 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+#pragma region Networking
+	
+	UFUNCTION(Server,Reliable,WithValidation)
+	void ServerHighSpeedRunAction();
+	void ServerHighSpeedRunAction_Implementation();
+	bool ServerHighSpeedRunAction_Validate();
 
+	UFUNCTION(Server,Reliable,WithValidation)
+	void ServerNormalSpeedWalkAction();
+	void ServerNormalSpeedWalkAction_Implementation();
+	bool ServerNormalSpeedWalkAction_Validate();
+	
+
+	
+#pragma  endregion 
 };
