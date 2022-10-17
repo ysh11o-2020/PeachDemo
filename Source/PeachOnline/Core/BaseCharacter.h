@@ -22,9 +22,9 @@ private:
 	UPROPERTY(Category=Character,VisibleAnywhere,BlueprintReadOnly,meta=(AllowPrivateAccess = "true"));
 	UCameraComponent* PlayerCamera;
 
-	UPROPERTY(Category=Character,VisibleAnywhere,BlueprintReadOnly,meta=(AllowPrivateAccess = "true"));
-	USkeletalMeshComponent* Charamesh;
-
+	UPROPERTY(Category=Character,VisibleAnywhere,BlueprintReadWrite,meta=(AllowPrivateAccess = "true"));
+	UCameraComponent* PlayerCameraBack;
+	
 	UPROPERTY(Category=Character,BlueprintReadOnly,meta=(AllowPrivateAccess = "true"));
 	UAnimInstance* CLientArmsAnimBP;
 
@@ -48,6 +48,9 @@ private:
 	void StopJumpAction();
 	void HighSpeedRunAction();
 	void NormalSpeedWalkAction();
+
+	void LookBack();
+	void StopLookBack();
 
 
 

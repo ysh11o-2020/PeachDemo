@@ -12,7 +12,6 @@ ABaseCharacter::ABaseCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 #pragma region Component
 
-
 	CameraSpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	if(CameraSpringArm)
 	{
@@ -24,7 +23,12 @@ ABaseCharacter::ABaseCharacter()
 		PlayerCamera->SetupAttachment(CameraSpringArm);
 		PlayerCamera->bUsePawnControlRotation = false;
 	}
-	
+	PlayerCameraBack = CreateDefaultSubobject<UCameraComponent>(TEXT("PlayerCameraBack"));
+	if(PlayerCameraBack)
+	{
+		PlayerCameraBack->SetupAttachment(Mesh);
+		PlayerCameraBack->bUsePawnControlRotation = false;
+	}
 	/*FPSArmsmesh=CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("FPSArmsmesh"));
 	if(FPSArmsmesh)
 	{
@@ -34,6 +38,8 @@ ABaseCharacter::ABaseCharacter()
 	Mesh->SetOwnerNoSee(true);
 	Mesh->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	Mesh->SetCollisionObjectType(ECollisionChannel::ECC_Pawn);*/
+	Mesh->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	Mesh->SetCollisionObjectType(ECollisionChannel::ECC_Pawn);
 #pragma endregion 
 
 }
@@ -91,6 +97,9 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	InputComponent->BindAction(TEXT("Jump"),IE_Pressed,this,&ABaseCharacter::JumpAction);
 	InputComponent->BindAction(TEXT("Jump"),IE_Released,this,&ABaseCharacter::StopJumpAction);
 
+	InputComponent->BindAction(TEXT("LookBack"),IE_Pressed,this,&ABaseCharacter::LookBack);
+	InputComponent->BindAction(TEXT("LookBack"),IE_Released,this,&ABaseCharacter::StopLookBack);
+
 }
 
 void ABaseCharacter::ServerHighSpeedRunAction_Implementation()
@@ -123,6 +132,18 @@ void ABaseCharacter::NormalSpeedWalkAction()
 {
 	CharacterMovement->MaxWalkSpeed=300;
 	ServerNormalSpeedWalkAction();
+}
+
+void ABaseCharacter::LookBack()
+{
+	PlayerCamera->SetActive(false,false);
+	PlayerCameraBack->SetActive(true,true);
+}
+
+void ABaseCharacter::StopLookBack()
+{
+	PlayerCamera->SetActive(true,true);
+	PlayerCameraBack->SetActive(false,false);
 }
 
 
