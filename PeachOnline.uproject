@@ -1,13 +1,17 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "{3066A915-40AA-58FB-A8AC-5DA9D3DD7261}",
+	"EngineAssociation": "{2B57D0B1-4847-C392-B0B6-548D753176F8}",
 	"Category": "",
 	"Description": "",
 	"Modules": [
 		{
 			"Name": "PeachOnline",
 			"Type": "Runtime",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"UMG",
+				"Engine"
+			]
 		}
 	]
 }
